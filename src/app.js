@@ -1,4 +1,4 @@
-const game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update /* debug: , render: render */ });
+const game = new Phaser.Game(800, 400, Phaser.AUTO, 'phaser-div', { preload: preload, create: create, update: update /* debug: , render: render */ });
 
 function preload() {
 

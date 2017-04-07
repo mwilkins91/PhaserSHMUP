@@ -3,9 +3,26 @@
 <head> 
 	<meta charset="UTF-8" />
     <title>Phaser - Making your first game, part 9</title>
+    <link rel="stylesheet" href="public/styles.css">
 </head>
 <body>
+	<div id="phaser-div" class="gameWindow">
+		<!-- JS creates Canvas here -->
+	</div>
+	<div class="arcadeControls">
+		<div class="fire">
+			<button class="fireBtn">FIRE!</button>
+		</div>
+		<div class="arrows">
+			<button class="up">&#8593;</button>
+			<div class="lowerKeys">
+				<button class="left">&#8592;</button>
+				<button class="down">&#8595;</button>
+				<button class="right">&#8594;</button>
+			</div>
+		</div>
 
+	</div>
 <script type="text/javascript" src="public/phaser.min.js"></script>
 <script src="./public/app.js"></script>
 </body>
