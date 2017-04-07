@@ -1,4 +1,4 @@
-const game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+const game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update /* debug: , render: render */ });
 
 function preload() {
 
@@ -8,7 +8,7 @@ function preload() {
 	game.load.spritesheet('dude', 'assets/plane.png', 100, 100);
 	game.load.image('starfield', 'assets/starfield.png');
 	game.load.image('laser', 'assets/bullet.png');
-	game.load.image('enemy', 'assets/baddie.png');
+	game.load.image('enemy', 'assets/enemy.png');
 	game.load.spritesheet('explosion', 'https://raw.githubusercontent.com/jschomay/phaser-demo-game/master/assets/explode.png', 128, 128);
 }
 
@@ -16,9 +16,6 @@ let player;
 let platforms;
 let cursors;
 
-let stars;
-let score = 0;
-let scoreText;
 let starfield;
 let fireButton;
 let ship;
@@ -29,7 +26,9 @@ let explosions;
 let difficulty = 30;
 let enemySpeed = 200;
 let difficultyLevelText = 0;
-let difficultyText
+let difficultyText;
+let score = 0;
+let scoreText;
 
 
 function create() {
@@ -92,7 +91,7 @@ function create() {
 	player.body.bounce.y = 0.5;
 	player.body.gravity.y = 0;
 	player.body.collideWorldBounds = true;
-
+	player.body.setSize(50, 50, 25, 25);
 	//  Our two animations, walking left and right.
 	player.animations.add('left', [2], 10, true);
 	player.animations.add('right', [1], 10, true);
@@ -111,7 +110,6 @@ function create() {
 	enemies.setAll('angle', 180);
 	enemies.setAll('outOfBoundsKill', true);
 	enemies.setAll('checkWorldBounds', true);
-
 	launchGreenEnemy();
 
 	//  An explosion pool
@@ -133,13 +131,15 @@ function create() {
 
 
 
-	difficultyText = game.add.text(16, 16, 'Difficulty: 0', { fontSize: '32px', fill: '#fff' });
+	difficultyText = game.add.text(16, 16, 'Difficulty Level: 0', { fontSize: '32px', fill: '#fff' });
+	scoreText = game.add.text(16, 60, 'Score: 0', { fontSize: '32px', fill: '#fff' });
+
 	setInterval(function() {
 		if (difficulty > 1) {
 			difficulty = difficulty - 1;
 		}
-			difficultyLevelText = difficultyLevelText + 1;
-			difficultyText.text = 'Difficulty Level: ' + difficultyLevelText;
+		difficultyLevelText = difficultyLevelText + 1;
+		difficultyText.text = 'Difficulty Level: ' + difficultyLevelText;
 
 		if (difficulty > 20) {
 			enemySpeed = enemySpeed + 20;
@@ -148,10 +148,14 @@ function create() {
 		} else if (difficulty <= 10) {
 			enemySpeed = enemySpeed + 10;
 		}
+		score = score + 10;
+		scoreText.text = 'Score: ' + score;
 
 
 	}, 3000)
 }
+
+
 
 function update() {
 
@@ -207,6 +211,9 @@ function shipCollide(player, enemy) {
 	explosion.alpha = 0.7;
 	explosion.play('explosion', 30, false, true);
 	enemy.kill();
+	score = score + 5;
+	scoreText.text = 'Score: ' + score;
+
 }
 
 function playerCollide(player, enemy) {
@@ -217,6 +224,15 @@ function playerCollide(player, enemy) {
 	explosion.play('explosion', 30, false, true);
 	player.kill();
 }
+
+// debug
+// function render() {
+// 	game.debug.bodyInfo(player, 32, 32);
+// 	game.debug.body(player);
+// 	enemies.children.forEach((enemy) => {
+// 		game.debug.body(enemy);
+// 	})
+// }
 
 function playerFires() {
 	// Get the first laser that's inactive, by passing 'false' as a parameter
@@ -246,11 +262,12 @@ function launchGreenEnemy() {
 		enemy.body.velocity.x = game.rnd.integerInRange(-300, 300);
 		enemy.body.velocity.y = ENEMY_SPEED;
 		enemy.body.drag.x = 100;
+		enemy.body.setSize(50, 50);
 		enemy.update = function() {
 			enemy.angle = 180 - game.math.radToDeg(Math.atan2(enemy.body.velocity.x, enemy.body.velocity.y));
 		}
 	}
-		//  Send another enemy soon
+	//  Send another enemy soon
 	game.time.events.add(game.rnd.integerInRange(MIN_ENEMY_SPACING, MAX_ENEMY_SPACING), launchGreenEnemy);
-	
+
 }
