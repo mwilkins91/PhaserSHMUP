@@ -1,4 +1,8 @@
+import $ from 'jquery';
+
 const game = new Phaser.Game(800, 400, Phaser.AUTO, 'phaser-div', { preload: preload, create: create, update: update /* debug: , render: render */ });
+
+
 
 function preload() {
 
@@ -29,7 +33,7 @@ let difficultyLevelText = 0;
 let difficultyText;
 let score = 0;
 let scoreText;
-
+let isAlive = true;
 
 function create() {
 
@@ -166,6 +170,7 @@ function update() {
 	//  Reset the players velocity (movement)
 	player.body.velocity.x = 0;
 	player.body.velocity.y = 0;
+
 	// player.body.velocity.y = -150;
 
 
@@ -194,13 +199,40 @@ function update() {
 		player.body.velocity.y = 100;
 	}
 
-	if (fireButton.isDown) {
+		if (fireButton.isDown) {
 		playerFires();
 	}
 
 	game.physics.arcade.overlap(lasers, enemies, shipCollide, null, this);
 	game.physics.arcade.overlap(player, enemies, playerCollide, null, this);
 	starfield.tilePosition.y += 3;
+	
+	/********************************
+	*      FOR HTML CONTROLS        *
+	********************************/
+	$('.left').mousedown(function() {
+		player.body.velocity.x = -550;
+	})
+	$('.right').mousedown(function() {
+		player.body.velocity.x = 550;
+	})
+	$('.up').mousedown(function() {
+		player.body.velocity.y = -550;
+	})
+	$('.down').mousedown(function() {
+		player.body.velocity.y = 550;
+	})
+	if(isAlive){
+		$('.fireBtn').on('click', function(event) {
+			event.preventDefault();
+			playerFires()
+		});
+	}
+	else{
+		$('.fireBtn').off('click');
+	}
+
+
 
 }
 
@@ -223,6 +255,7 @@ function playerCollide(player, enemy) {
 	explosion.alpha = 0.7;
 	explosion.play('explosion', 30, false, true);
 	player.kill();
+	isAlive = false;
 }
 
 // debug

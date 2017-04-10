@@ -23,6 +23,15 @@ html {
 	// transform: rotateY(45deg);
 	display: flex;
 	justify-content: space-around;
+	p {
+		font-size: 1.8rem;
+	}
+}
+
+.fire {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 .arrows {
@@ -35,6 +44,14 @@ html {
 		font-size: 3rem;
 		width: 50px;
 		height: 50px;
+		background: #b22b25;
+		border: lighten(#b22b25, 15) 8px outset;
+		&:focus {
+			outline: none;
+		}
+		&:active {
+			border: lighten(#b22b25, 15) 8px inset;
+		}
 	}
 	.fireBtn {
 		width: 100px;
