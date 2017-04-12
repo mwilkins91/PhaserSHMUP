@@ -34,6 +34,7 @@ let difficultyText;
 let score = 0;
 let scoreText;
 let isAlive = true;
+let gameStarted = false;
 
 function create() {
 
@@ -139,24 +140,28 @@ function create() {
 	scoreText = game.add.text(16, 60, 'Score: 0', { fontSize: '32px', fill: '#fff' });
 
 	setInterval(function() {
-		if (difficulty > 1) {
-			difficulty = difficulty - 1;
+		if (isAlive && gameStarted) {
+			if (difficulty > 1) {
+				difficulty = difficulty - 1;
+			}
+			difficultyLevelText = difficultyLevelText + 1;
+			difficultyText.text = 'Difficulty Level: ' + difficultyLevelText;
+
+			if (difficulty > 20) {
+				enemySpeed = enemySpeed + 20;
+			} else if (difficulty > 10 && difficulty <= 20) {
+				enemySpeed = enemySpeed + 15;
+			} else if (difficulty <= 10) {
+				enemySpeed = enemySpeed + 10;
+			}
+			score = score + 10;
+			scoreText.text = 'Score: ' + score;
+
 		}
-		difficultyLevelText = difficultyLevelText + 1;
-		difficultyText.text = 'Difficulty Level: ' + difficultyLevelText;
+	}, 3000);
 
-		if (difficulty > 20) {
-			enemySpeed = enemySpeed + 20;
-		} else if (difficulty > 10 && difficulty <= 20) {
-			enemySpeed = enemySpeed + 15;
-		} else if (difficulty <= 10) {
-			enemySpeed = enemySpeed + 10;
-		}
-		score = score + 10;
-		scoreText.text = 'Score: ' + score;
+	game.paused = true;
 
-
-	}, 3000)
 }
 
 
@@ -199,17 +204,17 @@ function update() {
 		player.body.velocity.y = 100;
 	}
 
-		if (fireButton.isDown) {
+	if (fireButton.isDown) {
 		playerFires();
 	}
 
 	game.physics.arcade.overlap(lasers, enemies, shipCollide, null, this);
 	game.physics.arcade.overlap(player, enemies, playerCollide, null, this);
 	starfield.tilePosition.y += 3;
-	
+
 	/********************************
-	*      FOR HTML CONTROLS        *
-	********************************/
+	 *      FOR HTML CONTROLS        *
+	 ********************************/
 	$('.left').mousedown(function() {
 		player.body.velocity.x = -550;
 	})
@@ -222,13 +227,12 @@ function update() {
 	$('.down').mousedown(function() {
 		player.body.velocity.y = 550;
 	})
-	if(isAlive){
+	if (isAlive) {
 		$('.fireBtn').on('click', function(event) {
 			event.preventDefault();
-			playerFires()
+			playerFires();
 		});
-	}
-	else{
+	} else {
 		$('.fireBtn').off('click');
 	}
 
@@ -256,6 +260,9 @@ function playerCollide(player, enemy) {
 	explosion.play('explosion', 30, false, true);
 	player.kill();
 	isAlive = false;
+	game.paused = true;
+	$('.gameOver').fadeIn('fast');
+
 }
 
 // debug
@@ -304,3 +311,12 @@ function launchGreenEnemy() {
 	game.time.events.add(game.rnd.integerInRange(MIN_ENEMY_SPACING, MAX_ENEMY_SPACING), launchGreenEnemy);
 
 }
+
+
+$('.startBtn').on('click', function(event) {
+	event.preventDefault();
+	$(this).fadeOut('fast', function() {
+		game.paused = false;
+		gameStarted = true;
+	});
+});
