@@ -15,6 +15,10 @@ html {
     src: url('../assets/8-BIT WONDER.TTF');
 }
 
+body {
+	background: #030b20;
+	background-image: url('../assets/background.jpg');
+}
 
 .gameWindow {
 	position: relative;
@@ -25,10 +29,14 @@ html {
 		top: 50%;
 		transform: translate(-50%, -50%);
 
-		background: white;
-		border: 2px solid black;
+		background: #030b20;
+		border: 4px solid white;
 		font-size: 2.4rem;
 		padding: 20px;
+		color: white;
+		&:hover {
+			background: #3e5589;
+		}
 	}
 	.gameOver {
 		position: absolute;
@@ -46,11 +54,13 @@ html {
 }
 
 
+
 .gameWindow canvas {
 	margin: 0 auto;
 }
 
 .arcadeControls {
+	position: relative;
 	background: lightgrey;
 	width: 800px;
 	margin: 0 auto;
@@ -61,6 +71,18 @@ html {
 	p {
 		font-size: 1.8rem;
 	}
+}
+
+.arcadeControls .leftHand {
+	position: absolute;
+	left: -95px;
+	bottom: 0;
+}
+
+.arcadeControls .rightHand {
+	position: absolute;
+	right: -95px;
+	bottom: 0;
 }
 
 .fire {
