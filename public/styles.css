@@ -141,7 +141,8 @@ body {
 
 .gameWindow {
   position: relative;
-  font-family: pixFont; }
+  font-family: pixFont;
+  min-height: 60vh; }
   .gameWindow button {
     position: absolute;
     left: 50%;
