@@ -176,6 +176,14 @@ function update() {
 	$('.down').mousedown(function() {
 		player.body.velocity.y = 550;
 	})
+	if (isAlive) {		
+		$('.fireBtn').on('click', function(event) {		
+			event.preventDefault();		
+			playerFires();		
+		});		
+	} else {		
+		$('.fireBtn').off('click');		
+	}
 }
 
 //function to handle enemy being hit by laser
