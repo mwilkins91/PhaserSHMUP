@@ -202,9 +202,10 @@ body {
     font-size: 1.8rem; }
     @media all and (max-width: 800px) {
       .arcadeControls p {
-        display: none; }
-        .arcadeControls p.mobileCtrl {
-          display: block; } }
+        display: none; } }
+  @media all and (max-width: 800px) and (min-height: 390px) {
+    .arcadeControls p.mobileCtrl {
+      display: block; } }
   @media all and (max-width: 800px) {
     .arcadeControls {
       width: 100%;

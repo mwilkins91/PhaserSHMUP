@@ -88,8 +88,10 @@ body {
 		font-size: 1.8rem;
 		@media all and (max-width: 800px){
 			display: none;
-			&.mobileCtrl {
-				display: block;
+			@media all and (min-height: 390px){
+				&.mobileCtrl {
+					display: block;
+				}
 			}
 		}
 	}
