@@ -85,6 +85,9 @@ body {
 		font-size: 1.8rem;
 		@media all and (max-width: 800px){
 			display: none;
+			&.mobileCtrl {
+				display: block;
+			}
 		}
 	}
 	@media all and (max-width: 800px){
