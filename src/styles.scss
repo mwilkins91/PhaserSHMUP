@@ -10,8 +10,15 @@ html {
 	font-size: 62.5%;
 }
 
+@font-face {
+    font-family: pixFont;
+    src: url('../assets/8-BIT WONDER.TTF');
+}
+
+
 .gameWindow {
 	position: relative;
+	font-family: pixFont;
 	button {
 		position: absolute;
 		left: 50%;
@@ -31,6 +38,10 @@ html {
 		font-size: 2.4rem;
 		color: white;
 		display: none;
+	}
+	.score {
+		@extend .gameOver;
+		top: 65%;
 	}
 }
 

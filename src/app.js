@@ -136,8 +136,8 @@ function create() {
 
 
 
-	difficultyText = game.add.text(16, 16, 'Difficulty Level: 0', { fontSize: '32px', fill: '#fff' });
-	scoreText = game.add.text(16, 60, 'Score: 0', { fontSize: '32px', fill: '#fff' });
+	difficultyText = game.add.text(16, 16, 'Difficulty Level: 0', { font: '20px pixFont', fill: '#fff' });
+	scoreText = game.add.text(16, 60, 'Score: 0', { font: '20px pixFont', fill: '#fff', });
 
 	setInterval(function() {
 		if (isAlive && gameStarted) {
@@ -262,6 +262,8 @@ function playerCollide(player, enemy) {
 	isAlive = false;
 	game.paused = true;
 	$('.gameOver').fadeIn('fast');
+	$('.dynamicScore').text(score);
+	$('.score').fadeIn('fast');
 
 }
 
