@@ -81,6 +81,9 @@ body {
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
+	p.mobileCtrl {
+		display: none;
+	}
 	p {
 		font-size: 1.8rem;
 		@media all and (max-width: 800px){
