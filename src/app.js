@@ -13,7 +13,7 @@ function preload() {
 	game.load.image('starfield', 'assets/starfield.png');
 	game.load.image('laser', 'assets/bullet.png');
 	game.load.image('enemy', 'assets/enemy.png');
-	game.load.spritesheet('explosion', 'https://raw.githubusercontent.com/jschomay/phaser-demo-game/master/assets/explode.png', 128, 128);
+	game.load.spritesheet('explosion', 'assets/explode.png', 128, 128);
 }
 
 let player;

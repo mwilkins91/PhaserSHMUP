@@ -57,6 +57,11 @@ body {
 
 .gameWindow canvas {
 	margin: 0 auto;
+	height: 60vh;
+	width: 800px;
+	@media all and (max-width: 800px){
+		width: 100%;
+	}
 }
 
 .arcadeControls {
@@ -65,11 +70,18 @@ body {
 	width: 800px;
 	margin: 0 auto;
 	padding: 40px;
+	height: 40vh;
 	// transform: rotateY(45deg);
 	display: flex;
 	justify-content: space-around;
+	align-items: center;
 	p {
 		font-size: 1.8rem;
+	}
+	@media all and (max-width: 800px){
+		width: 100%;
+		text-align: center;
+		padding: 0;
 	}
 }
 
@@ -77,12 +89,18 @@ body {
 	position: absolute;
 	left: -95px;
 	bottom: 0;
+	@media all and (max-width: 800px){
+		display: none;
+	}
 }
 
 .arcadeControls .rightHand {
 	position: absolute;
 	right: -95px;
 	bottom: 0;
+	@media all and (max-width: 800px){
+		display: none;
+	}
 }
 
 .fire {

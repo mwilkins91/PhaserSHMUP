@@ -168,7 +168,12 @@ body {
     top: 65%; }
 
 .gameWindow canvas {
-  margin: 0 auto; }
+  margin: 0 auto;
+  height: 60vh;
+  width: 800px; }
+  @media all and (max-width: 800px) {
+    .gameWindow canvas {
+      width: 100%; } }
 
 .arcadeControls {
   position: relative;
@@ -176,23 +181,38 @@ body {
   width: 800px;
   margin: 0 auto;
   padding: 40px;
+  height: 40vh;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-pack: distribute;
-      justify-content: space-around; }
+      justify-content: space-around;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
   .arcadeControls p {
     font-size: 1.8rem; }
+  @media all and (max-width: 800px) {
+    .arcadeControls {
+      width: 100%;
+      text-align: center;
+      padding: 0; } }
 
 .arcadeControls .leftHand {
   position: absolute;
   left: -95px;
   bottom: 0; }
+  @media all and (max-width: 800px) {
+    .arcadeControls .leftHand {
+      display: none; } }
 
 .arcadeControls .rightHand {
   position: absolute;
   right: -95px;
   bottom: 0; }
+  @media all and (max-width: 800px) {
+    .arcadeControls .rightHand {
+      display: none; } }
 
 .fire {
   display: -webkit-box;
