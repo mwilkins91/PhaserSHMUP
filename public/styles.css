@@ -164,6 +164,10 @@ body {
     font-size: 2.4rem;
     color: white;
     display: none; }
+    @media all and (max-width: 800px) {
+      .gameWindow .gameOver, .gameWindow .score {
+        width: 100%;
+        text-align: center; } }
   .gameWindow .score {
     top: 65%; }
 
@@ -192,6 +196,9 @@ body {
           align-items: center; }
   .arcadeControls p {
     font-size: 1.8rem; }
+    @media all and (max-width: 800px) {
+      .arcadeControls p {
+        display: none; } }
   @media all and (max-width: 800px) {
     .arcadeControls {
       width: 100%;
