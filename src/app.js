@@ -37,71 +37,30 @@ let isAlive = true;
 let gameStarted = false;
 
 function create() {
-
-	//  Make the world larger than the actual canvas
-	// game.world.setBounds(0, 0, 800, 10000);
-
 	starfield = game.add.tileSprite(0, 0, 800, 600, 'starfield');
 
-	//  We're going to be using physics, so enable the Arcade Physics system
+	//  Enable physics for the game
 	game.physics.startSystem(Phaser.Physics.ARCADE);
-
-	//  A simple background for our game
-	// game.add.sprite(0, 0, 'sky');
-
-	//  The platforms group contains the ground and the 2 ledges we can jump on
-	platforms = game.add.group();
-
-	//  We will enable physics for any object that is created in this group
-	platforms.enableBody = true;
-
-
-	// Create the group using the group factory
+	// Group to define laser behaviours
 	lasers = game.add.group();
-	// To move the sprites later on, we have to enable the body
+	// enable body to allow lasers to move (fire)
 	lasers.enableBody = true;
-	// We're going to set the body type to the ARCADE physics, since we don't need any advanced physics
 	lasers.physicsBodyType = Phaser.Physics.ARCADE;
-	/*
- 
-		This will create 20 sprites and add it to the stage. They're inactive and invisible, but they're there for later use.
-		We only have 20 laser bullets available, and will 'clean' and reset they're off the screen.
-		This way we save on precious resources by not constantly adding & removing new sprites to the stage
- 
-	*/
+
+	//allow only 2 lasers to be spawned at a time.
 	lasers.createMultiple(2, 'laser');
-
-	/*
- 
-		Behind the scenes, this will call the following function on all lasers:
-			- events.onOutOfBounds.add(resetLaser)
-		Every sprite has an 'events' property, where you can add callbacks to specific events.
-		Instead of looping over every sprite in the group manually, this function will do it for us.
- 
-	// */
 	lasers.callAll('events.onOutOfBounds.add', 'events.onOutOfBounds', resetLaser);
-	// // Same as above, set the anchor of every sprite to 0.5, 1.0
 	lasers.callAll('anchor.setTo', 'anchor', 0.5, 1.0);
-
-	// // This will set 'checkWorldBounds' to true on all sprites in the group
 	lasers.setAll('checkWorldBounds', true);
 
 	// The player and its settings
 	player = game.add.sprite(350, game.world.height - 150, 'dude');
-
-	//  We need to enable physics on the player
 	game.physics.arcade.enable(player);
-
-	//  Player physics properties. Give the little guy a slight bounce.
-	player.body.bounce.y = 0.5;
-	player.body.gravity.y = 0;
 	player.body.collideWorldBounds = true;
 	player.body.setSize(50, 50, 25, 25);
-	//  Our two animations, walking left and right.
 	player.animations.add('left', [2], 10, true);
 	player.animations.add('right', [1], 10, true);
 	player.animations.add('still', [0, 5], 10, true);
-
 
 	// The baddies!
 	enemies = game.add.group();
@@ -129,16 +88,15 @@ function create() {
 	});
 	//  Our controls.
 	cursors = game.input.keyboard.createCursorKeys();
-
 	game.camera.follow(player);
-
 	fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
 
-
+	//score and difficulty handling
 	difficultyText = game.add.text(16, 16, 'Difficulty Level: 0', { font: '20px pixFont', fill: '#fff' });
 	scoreText = game.add.text(16, 60, 'Score: 0', { font: '20px pixFont', fill: '#fff', });
 
+	//increase score and difficulty over time
 	setInterval(function() {
 		if (isAlive && gameStarted) {
 			if (difficulty > 1) {
@@ -160,56 +118,47 @@ function create() {
 		}
 	}, 3000);
 
+	//keeps the game from starting until the player hits Start!
 	game.paused = true;
-
+	$('.startBtn').fadeIn('fast');
 }
 
 
 
 function update() {
-
-	//  Collide the player and the stars with the platforms
-	game.physics.arcade.collide(player, platforms);
-
-
 	//  Reset the players velocity (movement)
 	player.body.velocity.x = 0;
 	player.body.velocity.y = 0;
 
-	// player.body.velocity.y = -150;
-
-
 	if (cursors.left.isDown) {
 		//  Move to the left
 		player.body.velocity.x = -150;
-		// player.animations.play('left');
 	} else if (cursors.right.isDown) {
 		//  Move to the right
 		player.body.velocity.x = 150;
-
-		// player.animations.play('right');
 	} else {
 		//  Stand still
-		// player.animations.stop();
-
 		player.animations.play('still');
 	}
 
-	//  Allow the player to jump if they are touching the ground.
+	//  Move Up
 	if (cursors.up.isDown) {
 		player.body.velocity.y = -150;
 	}
-
+	//  Move Down
 	if (cursors.down.isDown) {
 		player.body.velocity.y = 100;
 	}
-
+	// Fire the laser!
 	if (fireButton.isDown) {
 		playerFires();
 	}
-
+	// If laser hits enemy, kill it and increase score by 5
 	game.physics.arcade.overlap(lasers, enemies, shipCollide, null, this);
+	// If enemy his player, end game!
 	game.physics.arcade.overlap(player, enemies, playerCollide, null, this);
+	
+	//scroll the background
 	starfield.tilePosition.y += 3;
 
 	/********************************
@@ -227,19 +176,9 @@ function update() {
 	$('.down').mousedown(function() {
 		player.body.velocity.y = 550;
 	})
-	if (isAlive) {
-		$('.fireBtn').on('click', function(event) {
-			event.preventDefault();
-			playerFires();
-		});
-	} else {
-		$('.fireBtn').off('click');
-	}
-
-
-
 }
 
+//function to handle enemy being hit by laser
 function shipCollide(player, enemy) {
 	var explosion = explosions.getFirstExists(false);
 	explosion.reset(enemy.body.x + enemy.body.halfWidth, enemy.body.y + enemy.body.halfHeight);
@@ -252,6 +191,7 @@ function shipCollide(player, enemy) {
 
 }
 
+//function to handle player getting hit by enemy
 function playerCollide(player, enemy) {
 	var explosion = explosions.getFirstExists(false);
 	explosion.reset(player.body.x + player.body.halfWidth, player.body.y + player.body.halfHeight);
@@ -267,7 +207,7 @@ function playerCollide(player, enemy) {
 
 }
 
-// debug
+// debug function, displays hitboxes!
 // function render() {
 // 	game.debug.bodyInfo(player, 32, 32);
 // 	game.debug.body(player);
@@ -276,6 +216,8 @@ function playerCollide(player, enemy) {
 // 	})
 // }
 
+
+//creates the laser, defines its speed
 function playerFires() {
 	// Get the first laser that's inactive, by passing 'false' as a parameter
 	var laser = lasers.getFirstExists(false);
@@ -287,11 +229,13 @@ function playerFires() {
 	}
 }
 
+//kills laser if off screen
 function resetLaser(laser) {
 	// Destroy the laser
 	laser.kill();
 }
 
+//spawn enemies, speed and rate of spawn based on difficulty level
 function launchGreenEnemy() {
 	let difficultyMulti = difficulty * 10;
 	var MIN_ENEMY_SPACING = difficultyMulti;
@@ -314,7 +258,7 @@ function launchGreenEnemy() {
 
 }
 
-
+//starts the game!
 $('.startBtn').on('click', function(event) {
 	event.preventDefault();
 	$(this).fadeOut('fast', function() {

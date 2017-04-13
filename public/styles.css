@@ -153,7 +153,8 @@ body {
     border: 4px solid white;
     font-size: 2.4rem;
     padding: 20px;
-    color: white; }
+    color: white;
+    display: none; }
     .gameWindow button:hover {
       background: #3e5589; }
   .gameWindow .gameOver, .gameWindow .score {
@@ -266,3 +267,13 @@ body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex; }
+
+.loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  z-index: -1;
+  color: white;
+  font-size: 4rem; }
